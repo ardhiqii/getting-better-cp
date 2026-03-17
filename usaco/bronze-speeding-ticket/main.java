@@ -13,34 +13,32 @@ public class main{
     
     int N = Integer.parseInt(st.nextToken());
     int M = Integer.parseInt(st.nextToken());
-  
-    int[] seg = new int[N];
-    int[] sp = new int[N];
-    int count = 0;
-    for(int i = 0; i < N;i++){
-      st = new StringTokenizer(in.readLine());
-      count+= Integer.parseInt(st.nextToken());
-      seg[i] = count;
-      sp[i] = Integer.parseInt(st.nextToken());
+    int[] limit = new int[100];
+    int idx = 0;
+    int cuml = 0;
+    for(int i = 0; i < N; i++){
+      int[] limitSegs = Arrays.stream(in.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+      cuml+= limitSegs[0];
+      for(int j = idx; j < cuml; j++){
+        limit[j] = limitSegs[1];
+      }
+      idx+= limitSegs[0];
     }
 
-    int idx = 0;
-    int max = 0;
-    count = 0;
+    idx = 0;
+    cuml=0;
+    int[] bessie = new int[100];
     for(int i = 0; i < N; i++){
-      st = new StringTokenizer(in.readLine());
-      int addSegment = Integer.parseInt(st.nextToken());
-      int speed = Integer.parseInt(st.nextToken());
-      if(count <= seg[idx]){
-        max = Math.max(max,(speed-sp[idx]));
+      int[] limitSegs = Arrays.stream(in.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+      cuml+= limitSegs[0];
+      for(int j = idx; j < cuml; j++){
+        bessie[j] = limitSegs[1];
       }
-      count+= addSegment;
-      if(count > seg[idx]){
-        idx++;
-      }
-      if(count <= seg[idx]){
-        max =  Math.max(max,(speed-sp[idx]));
-      }
+      idx+= limitSegs[0];
+    }
+    int max = 0;
+    for(int i = 0; i < 100; i++){
+      max = Math.max(max,(bessie[i] - limit[i]));
     }
     out.println(max);
     out.close();
